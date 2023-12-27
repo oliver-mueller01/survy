@@ -29,7 +29,7 @@ const Navbar = () => {
                              </LoginLink>   
                              <RegisterLink className={buttonVariants({
                                 size: "sm"
-                            })} href={""}>
+                            })}>
                                 Jetzt beginnen
                             </RegisterLink>                   
                         </>
