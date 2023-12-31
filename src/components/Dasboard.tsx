@@ -6,29 +6,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { BookOpen, BookOpenCheck, Inbox } from "lucide-react"
+import { BookOpen, BookOpenCheck, Inbox, Loader2 } from "lucide-react"
 import { Button, buttonVariants } from "./ui/button"
-import { db } from "@/app/db"
 import { trpc } from '@/app/_trpc/client'
 import Link from "next/link"
-import { Timeline } from "./timeline/Timeline"
-import { TimelineItemDescription } from "./timeline/TimeLineItemDescription"
-import { TimelineItemSmallText } from "./timeline/TimelineItemSmallText"
 import EventTimeline from "./EventTimeline"
+
 
 
 const Dashboard = () => {
   const {data: forms, isLoading} = trpc.getForms.useQuery()
   const openForms = forms?.filter((form) => form.status === "OPEN")
   const closedForms = forms?.filter((form) => form.status === "CLOSED")
- 
+
   return (
     <main className="mx-auto max-w-7xl md:p-10">
       <div className="mt-5 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-cemter sm:gap-0">
         <h1 className="mb-3 font-bold text-4xl text-gray-900">Dashboard</h1>
         <Button>Fragebogen erstellen</Button>
       </div>
-      <div className=" mt-3 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+      {forms ?(<div className=" mt-3 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
@@ -72,9 +69,18 @@ const Dashboard = () => {
             })} href={""}>Abgeschlossene Fragebögen anzeigen</Link >
           </CardContent>
         </Card>
-            <EventTimeline/>
+        <Card className="col-span-2	 ">
 
-      </div>
+        </Card>
+            <EventTimeline data={forms}/>
+
+      </div>) : isLoading ? (
+        <div className="w-full mt-60 flex justify-center">
+        <div className="flex flex-col items-center gap-2">
+            <Loader2 className="h-8 w-8 animate-spin text-zinc-800"/>
+        </div>
+    </div>
+      ): (<h1>No data</h1>)}
     </main>
   )
 }

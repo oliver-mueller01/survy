@@ -1,7 +1,8 @@
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { buttonVariants } from "./ui/button";
-import { LoginLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import { LoginLink, LogoutLink, RegisterLink } from "@kinde-oss/kinde-auth-nextjs/server";
+import { cn } from "@/lib/utils";
 
 const Navbar = () => {
     return(
@@ -16,6 +17,11 @@ const Navbar = () => {
 
                     <div className="hidden items-center space-x-4 sm:flex">
                         <>
+                            <LogoutLink className={cn(buttonVariants({
+                                variant: "ghost",
+                                size: "sm"
+                            }),"text-red-400")}> DEBUG__Ausloggen
+                             </LogoutLink>
                             <Link className={buttonVariants({
                                 variant: "ghost",
                                 size: "sm"

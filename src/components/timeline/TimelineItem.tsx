@@ -1,6 +1,7 @@
 
 import { cn } from '@/lib/utils';
 import { ReactNode } from 'react';
+import { Badge } from '../ui/badge';
 
 export type TimelineItemProps = {
   title: ReactNode;
@@ -12,6 +13,7 @@ export type TimelineItemProps = {
   className?: string;
   bulletSize: number;
   lineSize: number;
+  isClosed: boolean;
 };
 
 export const TimelineItemBullet = ({
@@ -58,6 +60,7 @@ export const TimelineItem = ({
   bulletSize,
   className,
   lineSize,
+  isClosed,
   ...props
 }: TimelineItemProps) => {
   return (
@@ -76,7 +79,9 @@ export const TimelineItem = ({
       <TimelineItemBullet lineSize={lineSize} bulletSize={bulletSize} isActive={isActiveBullet}>
         {bullet}
       </TimelineItemBullet>
-      <TimelineItemTitle>{title}</TimelineItemTitle>
+      <TimelineItemTitle><div className='flex flex-row justify-between'>{title} {isClosed ? <Badge variant="default">Abgeschlossen </Badge> : <Badge variant="secondary">Erstellt </Badge>}</div></TimelineItemTitle>
+      
+
       {children}
     </li>
   );

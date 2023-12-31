@@ -30,6 +30,7 @@ export const Timeline = ({ items, activeItem, bulletSize = 16, lineSize = 2 }: T
       {items.map((item, index) => {
         return (
           <TimelineItem
+            isClosed={item.isClosed}
             key={index}
             title={item.title}
             bullet={item.bullet}
