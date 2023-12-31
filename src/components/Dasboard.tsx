@@ -7,10 +7,21 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { BookOpen, BookOpenCheck, Inbox } from "lucide-react"
-import { Button } from "./ui/button"
+import { Button, buttonVariants } from "./ui/button"
 import { db } from "@/app/db"
+import { trpc } from '@/app/_trpc/client'
+import Link from "next/link"
+import { Timeline } from "./timeline/Timeline"
+import { TimelineItemDescription } from "./timeline/TimeLineItemDescription"
+import { TimelineItemSmallText } from "./timeline/TimelineItemSmallText"
+import EventTimeline from "./EventTimeline"
+
 
 const Dashboard = () => {
+  const {data: forms, isLoading} = trpc.getForms.useQuery()
+  const openForms = forms?.filter((form) => form.status === "OPEN")
+  const closedForms = forms?.filter((form) => form.status === "CLOSED")
+ 
   return (
     <main className="mx-auto max-w-7xl md:p-10">
       <div className="mt-5 flex flex-col items-start justify-between gap-4 border-b border-gray-200 pb-5 sm:flex-row sm:items-cemter sm:gap-0">
@@ -26,10 +37,11 @@ const Dashboard = () => {
             <Inbox className="text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">
-              +20.1% from last month
-            </p>
+            <div className="text-2xl font-bold">{forms?.length}</div>
+            <Link className={buttonVariants({
+              className: "ml-0 pl-0",
+              variant: "link"
+            })} href={""}>Alle Fragebögen anzeigen</Link >
           </CardContent>
         </Card>
         <Card>
@@ -40,10 +52,11 @@ const Dashboard = () => {
             <BookOpen className="text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">
-              +180.1% from last month
-            </p>
+            <div className="text-2xl font-bold">{openForms?.length}</div>
+            <Link className={buttonVariants({
+              className: "ml-0 pl-0",
+              variant: "link"
+            })} href={""}>Offene Fragebögen anzeigen</Link >
           </CardContent>
         </Card>
         <Card>
@@ -52,12 +65,15 @@ const Dashboard = () => {
             <BookOpenCheck className="text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">
-              +19% from last month
-            </p>
+            <div className="text-2xl font-bold">{closedForms?.length}</div>
+            <Link className={buttonVariants({
+              className: "ml-0 pl-0",
+              variant: "link"
+            })} href={""}>Abgeschlossene Fragebögen anzeigen</Link >
           </CardContent>
         </Card>
+            <EventTimeline/>
+
       </div>
     </main>
   )

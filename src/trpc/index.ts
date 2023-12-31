@@ -1,5 +1,5 @@
 import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server';
-import { publicProcedure, router } from './trpc';
+import { publicProcedure, router, privateProcedure } from './trpc';
 import { TRPCError } from '@trpc/server';
 import { db } from '@/app/db';
  
@@ -27,6 +27,15 @@ export const appRouter = router({
     }
     
     return {success:true}
+  }),
+  getForms: privateProcedure.query(async ({ctx}) => {
+    const {userId} = ctx
+
+    return await db.form.findMany({
+      where: {
+        ownerId: userId
+      }
+    })
   })
 });
  

@@ -25,9 +25,11 @@ model Form {
   id        String     @id @default(uuid())
   title     String
   createdAt DateTime   @map("created_at")
+  closedAt  DateTime?  @map("closed_at")
   ownerId   String     @map("owner_id")
   category  Category[]
   owner     User       @relation(fields: [ownerId], references: [id])
+  status    String?
 }
 
 model Category {
